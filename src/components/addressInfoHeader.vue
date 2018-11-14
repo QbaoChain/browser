@@ -116,20 +116,20 @@
             let param = {
                 address: 'QPYtQeus6iQDHoncktXUHJp79JdE4ncnLb'
             };
-            get('qtumRPC/addressInfo/10/0', param).then(res => {
-                console.log(555, res);
-                //区块信息
-            });
-            get('qtumRPC/transactionInfo', {txHash: 'b02060c07b537f1f7f3e0e8337baf9954e6a2a6656fd784e4844819799fcaf1c'}).then((res) => {
-                console.log(666, res);
-            });
-            get('qtumRPC/blockInfo', {blockHashOrBlockCount: 'f914a266e1220a5a2fbd65212fed258807e6ad02aead25903507688db8202e1c'}).then(res => {
-                console.log(777, res);
-            });
-            get('/qtumRPC/tokenBalance', {address: 'QPYtQeus6iQDHoncktXUHJp79JdE4ncnLb'}).then((res) => {
-                console.log(888,res);
-            });
-            get('/qtumRPC/queryByParam',{param: ''})
+//            get('qtumRPC/addressInfo/10/0', param).then(res => {
+//                console.log(555, res);
+//                //区块信息
+//            });
+//            get('qtumRPC/transactionInfo', {txHash: 'b02060c07b537f1f7f3e0e8337baf9954e6a2a6656fd784e4844819799fcaf1c'}).then((res) => {
+//                console.log(666, res);
+//            });
+//            get('qtumRPC/blockInfo', {blockHashOrBlockCount: 'f914a266e1220a5a2fbd65212fed258807e6ad02aead25903507688db8202e1c'}).then(res => {
+//                console.log(777, res);
+//            });
+//            get('/qtumRPC/tokenBalance', {address: 'QPYtQeus6iQDHoncktXUHJp79JdE4ncnLb'}).then((res) => {
+//                console.log(888,res);
+//            });
+//            get('/qtumRPC/queryByParam',{param: ''})
         }
     }
 </script>
