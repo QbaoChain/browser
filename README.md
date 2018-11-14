@@ -1,6 +1,9 @@
-# qbaochainscan
+# Qbao Chain Browser
 
-> A Vue.js project
+Licence: MIT Licence
+## Getting Started
+
+Qbao Chain Browser is a vuejs built browser which is used for Qbao Chain. 
 
 ## Build Setup
 
