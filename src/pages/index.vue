@@ -5,7 +5,7 @@
 <template>
     <div id="index">
         <headerInfo></headerInfo>
-        <blockInfo></blockInfo>
+        <blockInfo :blockInfoData="blockInfoData"></blockInfo>
         <exchangeInfo></exchangeInfo>
     </div>
 </template>
@@ -18,7 +18,7 @@
         props: [],
         data() {
             return {
-
+                blockInfoData: []
             }
         },
         components: {
@@ -27,9 +27,19 @@
             exchangeInfo
         },
         computed: {},
-        methods: {},
-        mounted() {
+        methods: {
 
+        },
+        mounted() {
+            let socket = new SockJS('http://172.16.5.203:8081/activity-websocket');
+            let stompClient = Stomp.over(socket);
+            let that = this;
+            stompClient.connect({}, function (frame) {
+                stompClient.subscribe('/qbaoChain/response', function (greeting) {
+                    let greet = JSON.parse(greeting.body);
+                    that.blockInfoData = JSON.parse(greet.blocks);
+                });
+            });
         }
     }
 </script>
