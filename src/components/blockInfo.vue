@@ -58,20 +58,20 @@
                 <tr>
                     <td>高度</td>
                     <td>时间</td>
-                    <td>用时</td>
                     <td>区块奖励</td>
                     <td>交易数(条)</td>
-                    <td>地址</td>
+                    <td>区块哈希</td>
+                    <td>挖矿地址</td>
                 </tr>
             </thead>
             <tbody>
             <tr v-for="item in blockInfoData">
+                <td>{{item.blockHeight}}</td>
+                <td>{{item.blockTime}}</td>
                 <td>{{item.blockAward}}</td>
-                <td>{{item.time}}</td>
-                <td>{{item.times}}</td>
-                <td>{{item.blockReward}}</td>
-                <td>{{item.exchangeCount}}</td>
-                <td class="address">{{item.address}}</td>
+                <td>{{item.blockTxcount}}</td>
+                <td>{{item.blockHash}}</td>
+                <td class="address">{{item.blockMiner}}</td>
             </tr>
             </tbody>
         </table>

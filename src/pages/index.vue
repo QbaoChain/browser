@@ -6,7 +6,7 @@
     <div id="index">
         <headerInfo></headerInfo>
         <blockInfo :blockInfoData="blockInfoData"></blockInfo>
-        <exchangeInfo></exchangeInfo>
+        <exchangeInfo :exchangeInfo ="exchangeInfo"></exchangeInfo>
     </div>
 </template>
 
@@ -18,7 +18,8 @@
         props: [],
         data() {
             return {
-                blockInfoData: []
+                blockInfoData: [],
+                exchangeInfo: []
             }
         },
         components: {
@@ -37,7 +38,9 @@
             stompClient.connect({}, function (frame) {
                 stompClient.subscribe('/qbaoChain/response', function (greeting) {
                     let greet = JSON.parse(greeting.body);
-                    that.blockInfoData = JSON.parse(greet.blocks);
+                    console.log(3333,greet);
+                    that.blockInfoData = greet.blocks;
+                    that.exchangeInfo = greet.txs;
                 });
             });
         }
