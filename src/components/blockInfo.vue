@@ -65,8 +65,8 @@
                 </tr>
             </thead>
             <tbody>
-            <tr v-for="item in tableList">
-                <td>{{item.height}}</td>
+            <tr v-for="item in blockInfoData">
+                <td>{{item.blockAward}}</td>
                 <td>{{item.time}}</td>
                 <td>{{item.times}}</td>
                 <td>{{item.blockReward}}</td>
@@ -80,7 +80,7 @@
 
 <script>
 	export default {
-		props: [],
+		props: ['blockInfoData'],
 		data() {
 			return {
                 tableList: [
