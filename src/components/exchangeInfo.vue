@@ -62,9 +62,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in tableList">
-                <td class="address">{{item.address}}</td>
-                <td>{{item.amount}}</td>
+            <tr v-for="item in exchangeInfo">
+                <td class="address">{{item.txId}}</td>
+                <td>{{item.txFee}}</td>
             </tr>
             </tbody>
         </table>
@@ -73,47 +73,10 @@
 
 <script>
     export default {
-        props: [],
+        props: ['exchangeInfo'],
         data() {
             return {
-                tableList: [
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    },
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    },
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    },
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    },
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    },
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    },
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    },
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    },
-                    {
-                        address: 'dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10',
-                        amount: '4.003 QTUM'
-                    }
-                ]
+
             }
         },
         components: {},
