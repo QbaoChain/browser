@@ -5,7 +5,11 @@ import App from './App'
 import router from './router'
 import './assets/style/reset.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './assets/style/font.css'
+import './assets/style/font.css';
+import 'element-ui/lib/theme-chalk/index.css';
+import { Pagination } from 'element-ui';
+
+Vue.use(Pagination);
 
 Vue.config.productionTip = false;
 
