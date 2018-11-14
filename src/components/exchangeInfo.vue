@@ -57,7 +57,7 @@
         <table cellspacing="0" cellpadding="0">
             <thead>
             <tr>
-                <td>账户</td>
+                <td>交易哈希</td>
                 <td>交易金额</td>
             </tr>
             </thead>

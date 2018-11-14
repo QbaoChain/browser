@@ -168,9 +168,9 @@
                 }
             },
             sss(){
-                get('qtumRPC/transactionInfo',{txHash: 'b02060c07b537f1f7f3e0e8337baf9954e6a2a6656fd784e4844819799fcaf1c'}).then((res)=>{
-                    console.log('success',res);
-                })
+//                get('qtumRPC/transactionInfo',{txHash: 'b02060c07b537f1f7f3e0e8337baf9954e6a2a6656fd784e4844819799fcaf1c'}).then((res)=>{
+//                    console.log('success',res);
+//                })
             }
         },
         mounted(){
