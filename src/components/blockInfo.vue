@@ -1,5 +1,7 @@
 <style lang="less" scoped type="text/less">
     #blockInfo{
+        width: 1200px;
+        margin: 0 auto;
         margin-bottom: 20px;
         background: #ffffff;
         .pagination{

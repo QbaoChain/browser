@@ -1,6 +1,8 @@
 <style lang="less" scoped type="text/less">
     #exchangeInfo {
         background: #ffffff;
+        width: 1200px;
+        margin: 0 auto;
         margin-bottom: 60px;
         .pagination{
             padding: 10px 0 10px 0;
