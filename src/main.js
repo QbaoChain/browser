@@ -7,9 +7,10 @@ import './assets/style/reset.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './assets/style/font.css';
 import 'element-ui/lib/theme-chalk/index.css';
-import { Pagination } from 'element-ui';
+import { Pagination,Loading } from 'element-ui';
 
 Vue.use(Pagination);
+Vue.use(Loading);
 
 Vue.config.productionTip = false;
 
