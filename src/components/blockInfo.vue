@@ -1,7 +1,15 @@
 <style lang="less" scoped type="text/less">
     #blockInfo{
+        margin-bottom: 20px;
         background: #ffffff;
-        margin-top: 20px;
+        .pagination{
+            padding: 10px 0 10px 0;
+        }
+        .loading{
+            width: 100%;
+            height: 1000px;
+            text-align: center;
+        }
         h2{
             width: 100%;
             font-size: 16px;
@@ -9,11 +17,14 @@
             text-align: center;
             height: 56px;
             line-height: 56px;
+            position: relative;
             a{
+                position: absolute;
+                right: 0;
+                cursor: pointer;
                 font-size: 12px;
                 color: #333333;
                 text-align: center;
-                float: right;
                 margin-right: 52px;
             }
         }
@@ -49,13 +60,25 @@
 
 <template>
     <div id="blockInfo">
-        <h2>
+        <h2 v-if="more">
             区块
-            <a href="">更多</a>
+            <a @click="$router.push({path: '/block'})">更多</a>
         </h2>
-        <table cellspacing="0" cellpadding="0">
+        <div v-if="!more&&!loading" class="pagination">
+            <el-pagination
+                style="text-align: center"
+                v-on:current-change="handlePageChange"
+                background
+                :current-page="paginationConfig.page"
+                layout="prev, pager, next"
+                :total="1000">
+            </el-pagination>
+        </div>
+        <table
+            cellspacing="0"
+            cellpadding="0">
             <thead>
-                <tr>
+                <tr v-if="!loading">
                     <td>高度</td>
                     <td>时间</td>
                     <td>区块奖励</td>
@@ -63,92 +86,38 @@
                     <td>区块哈希</td>
                     <td>挖矿地址</td>
                 </tr>
+                <tr v-if="loading" :class="{loading: loading}" v-loading="loading"></tr>
             </thead>
-            <tbody>
-            <tr v-for="item in blockInfoData">
-                <td>{{item.blockHeight}}</td>
-                <td>{{item.blockTime}}</td>
-                <td>{{item.blockAward}}</td>
-                <td>{{item.blockTxcount}}</td>
-                <td>{{item.blockHash}}</td>
-                <td class="address">{{item.blockMiner}}</td>
-            </tr>
+            <tbody v-if="!loading">
+                <tr v-for="item in blockInfoData">
+                    <td>{{item.blockHeight}}</td>
+                    <td>{{item.blockTime}}</td>
+                    <td>{{item.blockAward}}</td>
+                    <td>{{item.blockTxcount}}</td>
+                    <td>{{item.blockHash}}</td>
+                    <td class="address">{{item.blockMiner}}</td>
+                </tr>
             </tbody>
         </table>
+        <div v-if="!more&&!loading" class="pagination">
+            <el-pagination
+                style="text-align: center"
+                background
+                v-on:current-change="handlePageChange"
+                :current-page="paginationConfig.page"
+                layout="prev, pager, next"
+                :total="1000">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
 <script>
 	export default {
-		props: ['blockInfoData'],
+		props: ['loading','blockInfoData','more','paginationConfig','searchConfig'],
 		data() {
 			return {
-                tableList: [
-                    {
-                        height: 230604,
-                        time: '2 分钟前',
-                        times: '64s',
-                        blockReward: '4.003 QTUM',
-                        exchangeCount: '3',
-                        address: 'QYHV93kbN9osowPHTWHjeYzgrmZasdato'
-                    },
-                    {
-                        height: 230604,
-                        time: '2 分钟前',
-                        times: '64s',
-                        blockReward: '4.003 QTUM',
-                        exchangeCount: '3',
-                        address: 'QYHV93kbN9osowPHTWHjeYzgrmZasdato'
-                    },
-                    {
-                        height: 230604,
-                        time: '2 分钟前',
-                        times: '64s',
-                        blockReward: '4.003 QTUM',
-                        exchangeCount: '3',
-                        address: 'QYHV93kbN9osowPHTWHjeYzgrmZasdato'
-                    },
-                    {
-                        height: 230604,
-                        time: '2 分钟前',
-                        times: '64s',
-                        blockReward: '4.003 QTUM',
-                        exchangeCount: '3',
-                        address: 'QYHV93kbN9osowPHTWHjeYzgrmZasdato'
-                    },
-                    {
-                        height: 230604,
-                        time: '2 分钟前',
-                        times: '64s',
-                        blockReward: '4.003 QTUM',
-                        exchangeCount: '3',
-                        address: 'QYHV93kbN9osowPHTWHjeYzgrmZasdato'
-                    },
-                    {
-                        height: 230604,
-                        time: '2 分钟前',
-                        times: '64s',
-                        blockReward: '4.003 QTUM',
-                        exchangeCount: '3',
-                        address: 'QYHV93kbN9osowPHTWHjeYzgrmZasdato'
-                    },
-                    {
-                        height: 230604,
-                        time: '2 分钟前',
-                        times: '64s',
-                        blockReward: '4.003 QTUM',
-                        exchangeCount: '3',
-                        address: 'QYHV93kbN9osowPHTWHjeYzgrmZasdato'
-                    },
-                    {
-                        height: 230604,
-                        time: '2 分钟前',
-                        times: '64s',
-                        blockReward: '4.003 QTUM',
-                        exchangeCount: '3',
-                        address: 'QYHV93kbN9osowPHTWHjeYzgrmZasdato'
-                    }
-                ]
+
             }
 		},
 		components: {
@@ -157,9 +126,15 @@
 		computed: {
 
         },
-		methods: {},
+		methods: {
+            handlePageChange(page){
+                this.paginationConfig.page = page;
+                let query = Object.assign({page: page},this.paginationConfig);
+                this.$router.push({path: this.router,query: query});
+            }
+        },
 		mounted() {
-
+            console.log(999,this.paginationConfig)
 		}
 	}
 </script>
