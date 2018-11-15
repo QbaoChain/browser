@@ -5,7 +5,6 @@
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
         >div{
-            width: 1200px;
             margin: 0 auto;
         }
         footer{
