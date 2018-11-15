@@ -4,9 +4,9 @@
 
 <template>
     <div id="index">
-        <headerInfo></headerInfo>
-        <blockInfo :blockInfoData="blockInfoData"></blockInfo>
-        <exchangeInfo :exchangeInfo ="exchangeInfo"></exchangeInfo>
+        <headerInfo :blockHeight="blockHeight"></headerInfo>
+        <blockInfo :blockInfoData="blockInfoData" :more="true"></blockInfo>
+        <exchangeInfo :exchangeInfo ="exchangeInfo" :more="true"></exchangeInfo>
     </div>
 </template>
 
@@ -20,7 +20,8 @@
         data() {
             return {
                 blockInfoData: [],
-                exchangeInfo: []
+                exchangeInfo: [],
+                blockHeight: ''
             }
         },
         components: {
@@ -36,6 +37,7 @@
                     page: 0
                 }).then(res => {
                     console.log('blockInfos', res);
+                    this.blockHeight = res.data.blockInfos[0].blockHeight;
                     this.blockInfoData = res.data.blockInfos;
                 })
             },
@@ -62,6 +64,8 @@
                     that.blockInfoData.unshift(greet.blocks);
                     that.exchangeInfo.pop();
                     that.exchangeInfo.unshift(greet.txs[0]);
+                    console.log(4343,greet);
+                    that.blockHeight = greet.blockHeight
                 });
             });
         }

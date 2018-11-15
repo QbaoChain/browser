@@ -1,8 +1,15 @@
 <style lang="less" scoped type="text/less">
     #exchangeInfo {
         background: #ffffff;
-        margin-top: 20px;
         margin-bottom: 60px;
+        .pagination{
+            padding: 10px 0 10px 0;
+        }
+        .loading{
+            width: 100%;
+            height: 1000px;
+            text-align: center;
+        }
         h2 {
             width: 100%;
             font-size: 16px;
@@ -10,11 +17,14 @@
             text-align: center;
             height: 56px;
             line-height: 56px;
+            position: relative;
             a {
+                position: absolute;
+                right: 0;
+                cursor: pointer;
                 font-size: 12px;
                 color: #333333;
                 text-align: center;
-                float: right;
                 margin-right: 52px;
             }
         }
@@ -50,30 +60,51 @@
 
 <template>
     <div id="exchangeInfo">
-        <h2>
+        <h2 v-if="more">
             交易
-            <a href="">更多</a>
+            <a @click="$router.push({path: '/exchange'})">更多</a>
         </h2>
+        <div v-if="!more&&!loading" class="pagination">
+            <el-pagination
+                style="text-align: center"
+                v-on:current-change="handlePageChange"
+                background
+                :current-page="paginationConfig.page"
+                layout="prev, pager, next"
+                :total="1000">
+            </el-pagination>
+        </div>
         <table cellspacing="0" cellpadding="0">
             <thead>
-            <tr>
+            <tr v-if="!loading">
                 <td>交易哈希</td>
                 <td>交易金额</td>
             </tr>
+            <tr v-if="loading" :class="{loading: loading}" v-loading="loading"></tr>
             </thead>
-            <tbody>
+            <tbody v-if="!loading">
             <tr v-for="item in exchangeInfo">
                 <td class="address">{{item.txId}}</td>
                 <td>{{item.txFee}}</td>
             </tr>
             </tbody>
         </table>
+        <div v-if="!more&&!loading" class="pagination">
+            <el-pagination
+                style="text-align: center"
+                v-on:current-change="handlePageChange"
+                background
+                :current-page="paginationConfig.page"
+                layout="prev, pager, next"
+                :total="1000">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['exchangeInfo'],
+        props: ['exchangeInfo','loading','more','paginationConfig','searchConfig'],
         data() {
             return {
 
@@ -81,7 +112,13 @@
         },
         components: {},
         computed: {},
-        methods: {},
+        methods: {
+            handlePageChange(page){
+                this.paginationConfig.page = page;
+                let query = Object.assign({page: page},this.paginationConfig);
+                this.$router.push({path: this.router,query: query});
+            }
+        },
         mounted() {
 
         }
