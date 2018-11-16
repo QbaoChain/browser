@@ -1,7 +1,10 @@
 <style lang="less" scoped type="text/less">
     #blockInfo {
+        width: 1200px;
+        margin: 0 auto;
         background: #ffffff;
-        margin: 20px 0 128px 0;
+        margin-top: 20px;
+        margin-bottom: 128px;
         h2 {
             width: 100%;
             font-size: 16px;
@@ -106,94 +109,29 @@
 
 <template>
     <div id="blockInfo">
-        <div v-for="item in tableList">
+        <div v-for="item in txInfos">
             <ul>
-                <li class="tLeft address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</li>
-                <li class="tRight"><span class="red">3个确认</span> 2018-09-20 11:41:52</li>
+                <li class="tLeft address">{{item.blockHash}}</li>
+                <li class="tRight"><span class="red">3个确认</span> {{item.time}}</li>
             </ul>
             <div>
                 <div class="left">
                     <div class="red">输入：<span class="moveRight"></span></div>
                     <ul>
-                        <li>
+                        <li v-for="txVin in item.txVin">
                             <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
+                                class="address">{{txVin.address}}</span>
+                            {{item.txFee}} {{item.txVout[0].symbol}}
                         </li>
                     </ul>
                 </div>
                 <div class="right">
                     <div class="red">输出：</div>
                     <ul>
-                        <li>
+                        <li v-for="txVout in item.txVout">
                             <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
-                        </li>
-                        <li>
-                            <span
-                                class="address">dd916a534e47774224337139e513f676f2e04f4ff4694b48a61c208dd683cd10</span>
-                            0.40036160 QTUM
+                                class="address">{{txVout.address}}</span>
+                            {{txVout.value}} {{txVout.symbol}}
                         </li>
                     </ul>
                 </div>
@@ -204,18 +142,46 @@
 </template>
 
 <script>
+    import { get } from '../ajax/index'
     export default {
         props: [],
         data() {
             return {
-                tableList: [{}, {}, {}, {}]
+                txInfos: []
             }
         },
         components: {},
         computed: {},
-        methods: {},
+        methods: {
+            getAddressInfo(){
+                this.txInfos = [];
+                let param = {
+                    address: this.$route.query.address,
+                    page: 0,
+                    size: 10
+                };
+                get('/qtumRPC/addressInfo',param).then((res) => {
+                    res.data.txInfos.forEach((item)=>{
+                        this.txInfos.push({
+                            blockHash: item.blockHash,
+                            blockHeight: item.blockHeight,
+                            size: item.size,
+                            time: item.time,
+                            txFee: item.txFee,
+                            txId: item.txId,
+                            txVin: JSON.parse(item.txVin),
+                            txVincount: item.txVincount,
+                            txVout: JSON.parse(item.txVout),
+                            txVoutcout: item.txVoutcout
+                        })
+                    });
+                    console.log(444,this.txInfos);
+                })
+            }
+        },
         mounted() {
-
+            console.log('43',this.$route.query.address);
+            this.getAddressInfo();
         }
     }
 </script>

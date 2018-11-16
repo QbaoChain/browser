@@ -1,5 +1,7 @@
 <style lang="less" scoped type="text/less">
     #addressInfoHeader {
+        width: 1200px;
+        margin: 0 auto;
         h2 {
             background: #E6E9EE;
             width: 100%;

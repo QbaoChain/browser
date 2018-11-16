@@ -97,7 +97,7 @@
                     <td>{{item.blockAward}}</td>
                     <td>{{item.blockTxcount}}</td>
                     <td>{{item.blockHash}}</td>
-                    <td class="address">{{item.blockMiner}}</td>
+                    <td class="address" @click="addressInfo(item.blockMiner)">{{item.blockMiner}}</td>
                 </tr>
             </tbody>
         </table>
@@ -129,6 +129,14 @@
 
         },
 		methods: {
+            addressInfo(address){
+                this.$router.push({
+                    path: '/addressInfo',
+                    query: {
+                        address
+                    }
+                })
+            },
             handlePageChange(page){
                 this.paginationConfig.page = page;
                 let query = Object.assign({page: page},this.paginationConfig);
