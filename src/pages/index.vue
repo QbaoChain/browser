@@ -14,7 +14,7 @@
     import headerInfo from '../components/headerInfo.vue';
     import blockInfo from '../components/blockInfo.vue';
     import exchangeInfo from '../components/exchangeInfo.vue';
-    import { get } from '../ajax/index';
+    import { get, getBaseUrl } from '../ajax/index';
     export default {
         props: [],
         data() {
@@ -54,7 +54,8 @@
         mounted() {
             this.getBlockInfos();
             this.exchange();
-            let socket = new SockJS('http://172.16.5.203:8081/activity-websocket');
+            let baseUrl = getBaseUrl();
+            let socket = new SockJS(`${baseUrl}activity-websocket`);
             let stompClient = Stomp.over(socket);
             let that = this;
             stompClient.connect({}, function (frame) {

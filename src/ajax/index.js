@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://172.16.5.203:8081/';
+const baseURL = 'http://47.100.27.65:8081/';
 const CancelToken = axios.CancelToken;
 let cancel, promiseArr = {};
 
@@ -66,6 +66,10 @@ axios.interceptors.response.use(response => {
     message.err(err.message);
     return Promise.resolve(err.response);
 });
+
+export function getBaseUrl() {
+    return baseURL;
+}
 
 export function get (url, param) {
     return new Promise((resolve, reject) => {
