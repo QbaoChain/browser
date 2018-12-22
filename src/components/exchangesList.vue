@@ -147,18 +147,20 @@
         props: ['address'],
         data() {
             return {
-                txInfos: []
+                txInfos: [],
+                page: 0,
+                lastCount: 10
             }
         },
-        components: {},
+        components: {
+        },
         computed: {},
         methods: {
-            getAddressInfo(){
-                console.log(111, this.address);
-                this.txInfos = [];
+            getTxInfo() {
+                let count = 0;
                 let param = {
                     address: this.address,
-                    page: 0,
+                    page: this.page,
                     size: 10
                 };
                 get('/qtumRPC/addressTxList',param).then((res) => {
@@ -176,12 +178,32 @@
                             txVoutcout: item.txVoutcout
                         })
                     });
+                    this.lastCount = res.data.length;
                 })
+            },
+            getInitTxInfo(){
+                console.log(111, this.address);
+                this.txInfos = [];
+                this.getTxInfo();
+            },
+
+            getNextTxInfo() {
+                this.page++;
+                this.getTxInfo();
             }
 
         },
         mounted() {
-            this.getAddressInfo();
+            this.getInitTxInfo();
+            let that = this;
+            window.addEventListener('scroll',function(){
+                if(document.documentElement.scrollTop + window.innerHeight >= document.body.offsetHeight) {
+                    if (that.lastCount == 10) {
+                        that.lastCount = 0;
+                        that.getNextTxInfo();
+                    }
+                }
+            });
         },
     }
 </script>
