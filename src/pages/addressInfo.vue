@@ -4,9 +4,9 @@
 
 <template>
     <div id="addressInfo">
-        <addressInfoHeader :addressInfo="addressInfo"></addressInfoHeader>
+        <addressInfoHeader :address="address"></addressInfoHeader>
         <tab></tab>
-        <exchangesList :txInfos="txInfos"></exchangesList>
+        <exchangesList :address="address"></exchangesList>
     </div>
 </template>
 
@@ -37,7 +37,9 @@
 		methods: {
         },
 		mounted() {
-
-		}
-	}
+		},
+        created() {
+            this.address = this.$route.query.address;
+        }
+    }
 </script>

@@ -144,7 +144,7 @@
 <script>
     import { get } from '../ajax/index'
     export default {
-        props: [],
+        props: ['address'],
         data() {
             return {
                 txInfos: []
@@ -154,15 +154,14 @@
         computed: {},
         methods: {
             getAddressInfo(){
+                console.log(111, this.address);
                 this.txInfos = [];
-                let address = this.$route.query.address;
                 let param = {
-                    address: address,
+                    address: this.address,
                     page: 0,
                     size: 10
                 };
                 get('/qtumRPC/addressTxList',param).then((res) => {
-                    console.log(res.data);
                     res.data.forEach((item)=>{
                         this.txInfos.push({
                             blockHash: item.blockHash,
@@ -177,13 +176,12 @@
                             txVoutcout: item.txVoutcout
                         })
                     });
-                    console.log(444,this.txInfos);
                 })
             }
 
         },
         mounted() {
             this.getAddressInfo();
-        }
+        },
     }
 </script>

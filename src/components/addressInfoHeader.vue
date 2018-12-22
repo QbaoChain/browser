@@ -58,6 +58,7 @@
 <script>
     import { get } from '../ajax/index'
     export default {
+        props: ['address'],
         data() {
             return {
                 addressInfo: {
@@ -71,7 +72,7 @@
         computed: {},
         methods: {},
         mounted() {
-            this.addressInfo.address = this.$route.query.address;
+            this.addressInfo.address = this.address;
             let param = {
                 address: this.addressInfo.address,
             };
