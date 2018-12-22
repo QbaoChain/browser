@@ -4,9 +4,9 @@
 
 <template>
     <div id="addressInfo">
-        <addressInfoHeader></addressInfoHeader>
+        <addressInfoHeader :addressInfo="addressInfo"></addressInfoHeader>
         <tab></tab>
-        <exchangesList></exchangesList>
+        <exchangesList :txInfos="txInfos"></exchangesList>
     </div>
 </template>
 
@@ -14,10 +14,18 @@
     import addressInfoHeader from '../components/addressInfoHeader.vue'
     import exchangesList from '../components/exchangesList.vue'
     import tab from '../components/tab.vue'
+    import { get } from '../ajax/index'
 	export default {
 		props: [],
 		data() {
-			return {}
+			return {
+			    addressInfo: {
+			        address: '',
+                    QBE: '',
+                    totalNumber: ''
+                },
+			    txInfos: []
+            }
 		},
 		components: {
             addressInfoHeader,
@@ -26,7 +34,8 @@
 //            pagination
         },
 		computed: {},
-		methods: {},
+		methods: {
+        },
 		mounted() {
 
 		}

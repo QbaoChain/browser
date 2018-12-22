@@ -155,13 +155,15 @@
         methods: {
             getAddressInfo(){
                 this.txInfos = [];
+                let address = this.$route.query.address;
                 let param = {
-                    address: this.$route.query.address,
+                    address: address,
                     page: 0,
                     size: 10
                 };
-                get('/qtumRPC/addressInfo',param).then((res) => {
-                    res.data.txInfos.forEach((item)=>{
+                get('/qtumRPC/addressTxList',param).then((res) => {
+                    console.log(res.data);
+                    res.data.forEach((item)=>{
                         this.txInfos.push({
                             blockHash: item.blockHash,
                             blockHeight: item.blockHeight,
@@ -178,9 +180,9 @@
                     console.log(444,this.txInfos);
                 })
             }
+
         },
         mounted() {
-            console.log('43',this.$route.query.address);
             this.getAddressInfo();
         }
     }
