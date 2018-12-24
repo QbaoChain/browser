@@ -1,5 +1,7 @@
 <style lang="less" scoped type="text/less">
-
+    #index {
+        padding-bottom: 150px;
+    }
 </style>
 
 <template>

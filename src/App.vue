@@ -4,12 +4,18 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
+        height: 100%;
         >div{
             margin: 0 auto;
+        }
+        .main {
+            padding-bottom: 10px;
         }
         footer{
             min-width: 1200px;
             text-align: center;
+            margin-top: -150px;
+            bottom: 0;
             .linkicon{
                 padding:0;margin:0;
                 a {
@@ -79,11 +85,14 @@
             letter-spacing: -0.28px;
         }
     }
+    .container {
+        min-height: 100%;
+    }
 </style>
 
 <template>
     <div id="app">
-        <div>
+        <div class="container">
             <router-view/>
         </div>
         <footer>
