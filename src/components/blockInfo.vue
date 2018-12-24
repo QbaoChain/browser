@@ -92,11 +92,11 @@
             </thead>
             <tbody v-if="!loading">
                 <tr v-for="item in blockInfoData">
-                    <td>{{item.blockHeight}}</td>
+                    <td class="address" @click="clickBlock(item.blockHeight)">{{item.blockHeight}}</td>
                     <td>{{item.blockTime}}</td>
                     <td>{{item.blockAward}}</td>
                     <td>{{item.blockTxcount}}</td>
-                    <td>{{item.blockHash}}</td>
+                    <td class="address" @click="clickBlock(item.blockHash)">{{item.blockHash}}</td>
                     <td class="address" @click="addressInfo(item.blockMiner)">{{item.blockMiner}}</td>
                 </tr>
             </tbody>
@@ -134,6 +134,14 @@
                     path: '/addressInfo',
                     query: {
                         address
+                    }
+                })
+            },
+            clickBlock(block) {
+                this.$router.push({
+                    path: '/blockDetail',
+                    query: {
+                        block
                     }
                 })
             },

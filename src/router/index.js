@@ -5,6 +5,7 @@ import block from '@/pages/block.vue'
 import addressInfo from '@/pages/addressInfo.vue'
 import exchange from '@/pages/exchange.vue'
 import transaction from '@/pages/transaction.vue'
+import blockDetail from '@/pages/blockDetail.vue'
 
 Vue.use(Router);
 
@@ -34,6 +35,11 @@ export default new Router({
             path: '/txInfo',
             name: 'transaction',
             component: transaction
+        },
+        {
+            path: '/blockDetail',
+            name: 'blockDetail',
+            component: blockDetail
         }
     ]
 })
