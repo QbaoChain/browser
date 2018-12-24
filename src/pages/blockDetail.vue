@@ -241,6 +241,7 @@
                     }
                 });
             },
+
             getBlockTx(block) {
                 let blockHeight = new Number(block);
                 let param = {
