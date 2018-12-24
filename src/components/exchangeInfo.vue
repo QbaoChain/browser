@@ -86,7 +86,7 @@
             </thead>
             <tbody v-if="!loading">
             <tr v-for="item in exchangeInfo">
-                <td class="address">{{item.txId}}</td>
+                <td class="address" @click="clickTxHash(item.txId)">{{item.txId}}</td>
                 <td>{{item.txFee}}</td>
             </tr>
             </tbody>
@@ -119,6 +119,14 @@
                 this.paginationConfig.page = page;
                 let query = Object.assign({page: page},this.paginationConfig);
                 this.$router.push({path: this.router,query: query});
+            },
+            clickTxHash(txHash) {
+                this.$router.push({
+                    path: '/txInfo',
+                    query: {
+                        txHash
+                    }
+                })
             }
         },
         mounted() {
