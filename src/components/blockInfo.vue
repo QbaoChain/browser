@@ -58,10 +58,14 @@
             }
         }
     }
+
+    .bottom {
+        padding-bottom: 150px;
+    }
 </style>
 
 <template>
-    <div id="blockInfo">
+    <div id="blockInfo" :class="!isIndex?'bottom':'none'">
         <h2 v-if="more">
             区块
             <a @click="$router.push({path: '/block'})">更多</a>
@@ -116,7 +120,7 @@
 
 <script>
 	export default {
-		props: ['loading','blockInfoData','more','paginationConfig','searchConfig'],
+		props: ['loading','blockInfoData','more','paginationConfig','searchConfig','isIndex'],
 		data() {
 			return {
 

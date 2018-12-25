@@ -58,10 +58,14 @@
             }
         }
     }
+
+    .bottom {
+        padding-bottom: 150px;
+    }
 </style>
 
 <template>
-    <div id="exchangeInfo">
+    <div id="exchangeInfo" :class="!isIndex?'bottom':'none'">
         <h2 v-if="more">
             交易
             <a @click="$router.push({path: '/exchange'})">更多</a>
@@ -106,7 +110,7 @@
 
 <script>
     export default {
-        props: ['exchangeInfo','loading','more','paginationConfig','searchConfig'],
+        props: ['exchangeInfo','loading','more','paginationConfig','searchConfig','isIndex'],
         data() {
             return {
 

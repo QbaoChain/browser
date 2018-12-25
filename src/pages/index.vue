@@ -7,8 +7,8 @@
 <template>
     <div id="index">
         <headerInfo></headerInfo>
-        <blockInfo :blockInfoData="blockInfoData" :more="true"></blockInfo>
-        <exchangeInfo :exchangeInfo ="exchangeInfo" :more="true"></exchangeInfo>
+        <blockInfo :blockInfoData="blockInfoData" :more="true" :isIndex="true"></blockInfo>
+        <exchangeInfo :exchangeInfo ="exchangeInfo" :more="true" :isIndex="true"></exchangeInfo>
     </div>
 </template>
 
