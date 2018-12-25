@@ -173,6 +173,9 @@
             <li>
                 <label>交易数量：</label><span>{{blockInfo.blockTxcount}}</span>
             </li>
+            <li>
+                <label>确认数量：</label><span>{{maxBlockHeight - blockInfo.blockHeight + 1}}</span>
+            </li>
         </ul>
         <h3>
 
@@ -224,6 +227,7 @@
                 txInfos: [],
                 block: null,
                 page: 0,
+                maxBlockHeight: null
             }
         },
         components: {
@@ -265,16 +269,10 @@
                     }
                 });
             },
-            fetchDate() {
-                let page = !this.$route.query.page ? 0 : Number(this.$route.query.page);
-                this.paginationConfig.page = Math.max(1, page);
-                this.getBlockInfoData()
-            },
-            changes() {
-                this.$router.push({
-                    path: '/block',
-                    query: {
-                        page: this.$route.query.page || 1
+            getMaxBlockHeight() {
+                get('/qtumRPC/maxBlockHeight').then(res => {
+                    if (res.data) {
+                        this.maxBlockHeight = res.data.maxHeight;
                     }
                 })
             },
@@ -283,6 +281,7 @@
             let block = this.$route.query.block;
             this.getBlockInfoData(block);
             this.getBlockTx(block);
+            this.getMaxBlockHeight();
         }
     }
 </script>

@@ -112,7 +112,7 @@
         <div v-for="item in txInfos">
             <ul>
                 <li class="tLeft address">{{item.blockHash}}</li>
-                <li class="tRight"><span class="red">3个确认</span> {{item.time}}</li>
+                <li class="tRight"><span class="red">{{maxBlockHeight - item.blockHeight + 1}}个确认</span> {{item.time}}</li>
             </ul>
             <div>
                 <div class="left">
@@ -149,7 +149,8 @@
             return {
                 txInfos: [],
                 page: 0,
-                lastCount: 10
+                lastCount: 10,
+                maxBlockHeight: null
             }
         },
         components: {
@@ -190,11 +191,19 @@
             getNextTxInfo() {
                 this.page++;
                 this.getTxInfo();
+            },
+            getMaxBlockHeight() {
+                get('/qtumRPC/maxBlockHeight').then(res => {
+                    if (res.data) {
+                        this.maxBlockHeight = res.data.maxHeight;
+                    }
+                })
             }
 
         },
         mounted() {
             this.getInitTxInfo();
+            this.getMaxBlockHeight();
             let that = this;
             window.addEventListener('scroll',function(){
                 if(document.documentElement.scrollTop + window.innerHeight >= document.body.offsetHeight) {

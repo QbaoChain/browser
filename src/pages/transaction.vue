@@ -170,7 +170,7 @@
                 <label>时间：</label><span>{{txInfo.time}}</span>
             </li>
             <li>
-                <label>确认数：</label><span>3</span>
+                <label>确认数：</label><span>{{maxBlockHeight - txInfo.blockHeight + 1}}</span>
             </li>
             <li>
                 <label>手续费：</label><span>{{txInfo.txFee}}</span>
@@ -222,7 +222,8 @@
                     txFee: null,
                     txVin: null,
                     txVout: null
-                }
+                },
+                maxBlockHeight: null
             }
         },
         components: {headerInfo},
@@ -243,11 +244,19 @@
                         this.txInfo.txVout = JSON.parse(this.txInfo.txVout);
                     }
                 })
+            },
+            getMaxBlockHeight() {
+                get('/qtumRPC/maxBlockHeight').then(res => {
+                    if (res.data) {
+                        this.maxBlockHeight = res.data.maxHeight;
+                    }
+                })
             }
         },
         mounted() {
-            let txId = this.$route.query.txId;
+            let txId = this.$route.query.txHash;
             this.getTxInfo(txId);
+            this.getMaxBlockHeight();
         }
     }
 </script>

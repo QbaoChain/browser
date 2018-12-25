@@ -3,6 +3,7 @@
         width: 1200px;
         margin: 0 auto;
         margin-bottom: 20px;
+        padding-bottom: 150px;
         background: #ffffff;
         .pagination{
             padding: 10px 0 10px 0;
