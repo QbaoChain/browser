@@ -31,6 +31,7 @@
                     line-height: 36px;
                 }
                 .tLeft {
+                    width: 55%;
                     text-align: left;
                     margin-left: 41px;
                     > div {
@@ -38,7 +39,7 @@
                     }
                 }
                 .tRight {
-                    width: 46.5%;
+                    width: 35%;
                     text-align: right;
                     font-size: 12px;
                     color: #666666;
@@ -165,6 +166,7 @@
                     size: 10
                 };
                 get('/qtumRPC/addressTxList',param).then((res) => {
+                    this.lastCount = res.data.length;
                     res.data.forEach((item)=>{
                         this.txInfos.push({
                             blockHash: item.blockHash,
@@ -179,7 +181,6 @@
                             txVoutcout: item.txVoutcout
                         })
                     });
-                    this.lastCount = res.data.length;
                 })
             },
             getInitTxInfo(){
@@ -206,7 +207,7 @@
             this.getMaxBlockHeight();
             let that = this;
             window.addEventListener('scroll',function(){
-                if(document.documentElement.scrollTop + window.innerHeight >= document.body.offsetHeight) {
+                if(document.documentElement.scrollTop + window.innerHeight >= document.body.scrollHeight - 200) {
                     if (that.lastCount == 10) {
                         that.lastCount = 0;
                         that.getNextTxInfo();

@@ -68,6 +68,7 @@
                     line-height: 36px;
                 }
                 .tLeft {
+                    width: 55%;
                     text-align: left;
                     margin-left: 41px;
                     > div {
@@ -75,7 +76,7 @@
                     }
                 }
                 .tRight {
-                    width: 46.5%;
+                    width: 35%;
                     text-align: right;
                     font-size: 12px;
                     color: #666666;
