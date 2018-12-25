@@ -4,6 +4,7 @@
 
 <template>
     <div>
+        <headerInfo></headerInfo>
         <exchange
             :searchConfig="searchConfig"
             :exchangeInfo ="exchangeInfo"
@@ -15,6 +16,7 @@
 
 <script>
     import exchange from '../components/exchangeInfo.vue';
+    import headerInfo from '../components/headerInfo.vue';
     import { get } from '../ajax/index'
 	export default {
 		props: [],
@@ -29,7 +31,8 @@
             }
 		},
 		components: {
-            exchange
+            exchange,
+            headerInfo
         },
         watch: {
             '$route': 'fetchDate'

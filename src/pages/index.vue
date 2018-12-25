@@ -6,7 +6,7 @@
 
 <template>
     <div id="index">
-        <headerInfo :blockHeight="blockHeight"></headerInfo>
+        <headerInfo></headerInfo>
         <blockInfo :blockInfoData="blockInfoData" :more="true"></blockInfo>
         <exchangeInfo :exchangeInfo ="exchangeInfo" :more="true"></exchangeInfo>
     </div>

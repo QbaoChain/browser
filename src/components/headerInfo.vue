@@ -57,8 +57,7 @@
     <div id="headerInfo">
         <div class="content">
             <div>
-                <a><img src="../assets/images/logo.png" alt=""></a>
-                <a>区块高度：<span>{{blockHeight}}</span></a>
+                <a href="/"><img src="../assets/images/logo.png" alt=""></a>
             </div>
             <div class="input">
                 <input type="text" placeholder="搜索 区块/交易/地址/合约/Token">
@@ -69,7 +68,7 @@
 
 <script>
     export default {
-        props: ['blockHeight'],
+        props: [],
         name: 'headerInfo',
         data() {
             return {

@@ -147,6 +147,7 @@
 
 <template>
     <div id="txInfoHeader">
+        <headerInfo></headerInfo>
         <h2>
             区块信息
         </h2>
@@ -206,6 +207,7 @@
 
 <script>
     import { get } from '../ajax/index'
+    import headerInfo from '../components/headerInfo.vue';
     export default {
         props: [],
         data() {
@@ -225,6 +227,7 @@
             }
         },
         components: {
+            headerInfo
         },
         computed: {
         },

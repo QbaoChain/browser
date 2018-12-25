@@ -4,6 +4,7 @@
 
 <template>
     <div>
+        <headerInfo></headerInfo>
         <blockInfo
             :blockInfoData="blockInfoData"
             :more="false"
@@ -16,6 +17,7 @@
 
 <script>
     import blockInfo from '../components/blockInfo.vue'
+    import headerInfo from '../components/headerInfo.vue'
     import { get } from '../ajax/index'
 	export default {
 		props: [],
@@ -30,7 +32,8 @@
             }
 		},
 		components: {
-            blockInfo
+            blockInfo,
+            headerInfo
         },
 		computed: {},
         watch: {

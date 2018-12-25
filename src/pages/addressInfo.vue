@@ -6,6 +6,7 @@
 
 <template>
     <div id="addressInfo">
+        <headerInfo></headerInfo>
         <addressInfoHeader :address="address"></addressInfoHeader>
         <tab></tab>
         <exchangesList :address="address"></exchangesList>
@@ -16,6 +17,7 @@
     import addressInfoHeader from '../components/addressInfoHeader.vue'
     import exchangesList from '../components/exchangesList.vue'
     import tab from '../components/tab.vue'
+    import headerInfo from '../components/headerInfo.vue'
     import { get } from '../ajax/index'
 	export default {
 		props: [],
@@ -32,7 +34,8 @@
 		components: {
             addressInfoHeader,
             exchangesList,
-            tab
+            tab,
+            headerInfo
 //            pagination
         },
 		computed: {},

@@ -149,6 +149,7 @@
 
 <template>
     <div id="txInfoHeader">
+        <headerInfo></headerInfo>
         <h2>
             交易信息
         </h2>
@@ -207,6 +208,7 @@
 
 <script>
     import { get } from '../ajax/index'
+    import headerInfo from '../components/headerInfo.vue'
     export default {
         props: ['txHash'],
         data() {
@@ -223,7 +225,7 @@
                 }
             }
         },
-        components: {},
+        components: {headerInfo},
         computed: {
         },
         methods: {
