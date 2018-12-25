@@ -112,7 +112,7 @@
     <div id="blockInfo">
         <div v-for="item in txInfos">
             <ul>
-                <li class="tLeft address">{{item.blockHash}}</li>
+                <li class="tLeft address">{{item.txId}}<copy-clipboard :value="item.txId"></copy-clipboard></li>
                 <li class="tRight"><span class="red">{{maxBlockHeight - item.blockHeight + 1}}个确认</span> {{item.time}}</li>
             </ul>
             <div>
@@ -144,6 +144,7 @@
 
 <script>
     import { get } from '../ajax/index'
+    import copyClipboard from '../components/copyClipboard.vue'
     export default {
         props: ['address'],
         data() {
@@ -155,6 +156,7 @@
             }
         },
         components: {
+            copyClipboard
         },
         computed: {},
         methods: {

@@ -155,6 +155,7 @@
         <ul>
             <li>
                 <label>区块hash：</label><span class="address">{{blockInfo.blockHash}}</span>
+                <copy-clipboard :value="blockInfo.blockHash"></copy-clipboard>
             </li>
             <li>
                 <label>区块高度：</label><span>{{blockInfo.blockHeight}}</span>
@@ -170,6 +171,7 @@
             </li>
             <li>
                 <label>挖矿地址：</label><span>{{blockInfo.blockMiner}}</span>
+                <copy-clipboard :value="blockInfo.blockMiner"></copy-clipboard>
             </li>
             <li>
                 <label>交易数量：</label><span>{{blockInfo.blockTxcount}}</span>
@@ -182,6 +184,9 @@
 
         </h3>
         <div v-for="item in txInfos" id="blockInfo">
+            <ul>
+                <li class="tLeft address">{{item.txId}}<copy-clipboard :value="item.txId"></copy-clipboard></li>
+            </ul>
             <div>
                 <div class="left">
                     <div class="red">输入：<span class="moveRight"></span></div>
@@ -212,6 +217,7 @@
 <script>
     import { get } from '../ajax/index'
     import headerInfo from '../components/headerInfo.vue';
+    import copyClipboard from '../components/copyClipboard.vue';
     export default {
         props: [],
         data() {
@@ -233,7 +239,7 @@
             }
         },
         components: {
-            headerInfo
+            headerInfo, copyClipboard
         },
         computed: {
         },
@@ -283,6 +289,17 @@
             getNextTxInfo() {
                 this.page++;
                 this.getBlockTx();
+            },
+            copyToClip(str) {
+                function listener(e) {
+                    e.clipboardData.setData("text/html", str);
+                    e.clipboardData.setData("text/plain", str);
+                    e.preventDefault();
+                }
+
+                document.addEventListener("copy", listener);
+                document.execCommand("copy");
+                document.removeEventListener("copy", listener);
             },
         },
         mounted() {

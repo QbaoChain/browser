@@ -44,6 +44,7 @@
         <ul>
             <li>
                 <label>账户地址：</label><span class="address">{{addressInfo.address}}</span>
+                <copy-clipboard :value="addressInfo.address"></copy-clipboard>
             </li>
             <li>
                 <label>账户余额：</label><span>{{addressInfo.QBE}}</span>
@@ -57,6 +58,7 @@
 
 <script>
     import { get } from '../ajax/index'
+    import copyClipboard from '../components/copyClipboard.vue'
     export default {
         props: ['address'],
         data() {
@@ -68,7 +70,9 @@
                 }
             }
         },
-        components: {},
+        components: {
+            copyClipboard
+        },
         computed: {},
         methods: {},
         mounted() {

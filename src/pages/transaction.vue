@@ -156,9 +156,11 @@
         <ul>
             <li>
                 <label>交易hash：</label><span class="address">{{txInfo.txId}}</span>
+                <copy-clipboard :value="txInfo.txId"></copy-clipboard>
             </li>
             <li>
                 <label>区块hash：</label><span>{{txInfo.blockHash}}</span>
+                <copy-clipboard :value="txInfo.blockHash"></copy-clipboard>
             </li>
             <li>
                 <label>区块高度：</label><span>{{txInfo.blockHeight}}</span>
@@ -209,6 +211,7 @@
 <script>
     import { get } from '../ajax/index'
     import headerInfo from '../components/headerInfo.vue'
+    import copyClipboard from '../components/copyClipboard.vue'
     export default {
         props: ['txHash'],
         data() {
@@ -226,7 +229,7 @@
                 maxBlockHeight: null
             }
         },
-        components: {headerInfo},
+        components: {headerInfo, copyClipboard},
         computed: {
         },
         methods: {
