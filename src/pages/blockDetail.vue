@@ -228,7 +228,8 @@
                 txInfos: [],
                 block: null,
                 page: 0,
-                maxBlockHeight: null
+                maxBlockHeight: null,
+                lastCount: 10
             }
         },
         components: {
@@ -261,6 +262,8 @@
                     param.blockHash = block;
                 }
                 get('/qtumRPC/transactionInfo', param).then(res => {
+                    this.lastCount = res.data.content.length;
+
                     if (res.data && res.data.content.length) {
                         res.data.content.forEach(tx => {
                             tx.txVin = JSON.parse(tx.txVin);
@@ -277,12 +280,25 @@
                     }
                 })
             },
+            getNextTxInfo() {
+                this.page++;
+                this.getBlockTx();
+            },
         },
         mounted() {
             let block = this.$route.query.block;
             this.getBlockInfoData(block);
             this.getBlockTx(block);
             this.getMaxBlockHeight();
+            let that = this;
+            window.addEventListener('scroll',function(){
+                if(document.documentElement.scrollTop + window.innerHeight >= document.body.scrollHeight - 200) {
+                    if (that.lastCount == 10) {
+                        that.lastCount = 0;
+                        that.getNextTxInfo();
+                    }
+                }
+            });
         }
     }
 </script>
