@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://47.100.27.65:8081/';
+const baseURL = 'https://explorer.aethercoder.com:8443/';
 const CancelToken = axios.CancelToken;
 let cancel, promiseArr = {};
 
