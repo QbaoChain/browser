@@ -8,9 +8,14 @@ import 'font-awesome/css/font-awesome.min.css';
 import './assets/style/font.css';
 import 'element-ui/lib/theme-chalk/index.css';
 import { Pagination,Loading } from 'element-ui';
+import {clickBlock, clickAddress, clickTransaction} from './common/clickLink'
 
+console.log('clickAddress', clickAddress);
 Vue.use(Pagination);
 Vue.use(Loading);
+Vue.use(clickAddress);
+Vue.use(clickBlock);
+Vue.use(clickTransaction);
 
 Vue.config.productionTip = false;
 

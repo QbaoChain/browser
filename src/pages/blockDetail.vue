@@ -170,7 +170,7 @@
                 <label>区块奖励：</label><span>{{blockInfo.blockAward}}</span>
             </li>
             <li>
-                <label>挖矿地址：</label><span>{{blockInfo.blockMiner}}</span>
+                <label>挖矿地址：</label><span class="address"><a @click="clickAddress($router, blockInfo.blockMiner)">{{blockInfo.blockMiner}}</a></span>
                 <copy-clipboard :value="blockInfo.blockMiner"></copy-clipboard>
             </li>
             <li>
@@ -185,15 +185,14 @@
         </h3>
         <div v-for="item in txInfos" id="blockInfo">
             <ul>
-                <li class="tLeft address">{{item.txId}}<copy-clipboard :value="item.txId"></copy-clipboard></li>
+                <li class="tLeft"><span class="address" @click="clickTransaction($router, item.txId)">{{item.txId}}</span><copy-clipboard :value="item.txId"></copy-clipboard></li>
             </ul>
             <div>
                 <div class="left">
                     <div class="red">输入：<span class="moveRight"></span></div>
                     <ul>
                         <li v-for="txVin in item.txVin">
-                            <span
-                                class="address">{{txVin.address}}</span>
+                            <span class="address" @click="clickAddress($router, txVin.address)">{{txVin.address}}</span>
                             {{item.txFee}} {{item.txVout[0].symbol}}
                         </li>
                     </ul>
@@ -202,8 +201,7 @@
                     <div class="red">输出：</div>
                     <ul>
                         <li v-for="txVout in item.txVout">
-                            <span
-                                class="address">{{txVout.address}}</span>
+                            <span class="address" @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
                             {{txVout.value}} {{txVout.symbol}}
                         </li>
                     </ul>
@@ -289,18 +287,7 @@
             getNextTxInfo() {
                 this.page++;
                 this.getBlockTx();
-            },
-            copyToClip(str) {
-                function listener(e) {
-                    e.clipboardData.setData("text/html", str);
-                    e.clipboardData.setData("text/plain", str);
-                    e.preventDefault();
-                }
-
-                document.addEventListener("copy", listener);
-                document.execCommand("copy");
-                document.removeEventListener("copy", listener);
-            },
+            }
         },
         mounted() {
             let block = this.$route.query.block;

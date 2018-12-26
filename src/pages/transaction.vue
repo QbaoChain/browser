@@ -159,7 +159,7 @@
                 <copy-clipboard :value="txInfo.txId"></copy-clipboard>
             </li>
             <li>
-                <label>区块hash：</label><span>{{txInfo.blockHash}}</span>
+                <label>区块hash：</label><span class="address" @click="clickBlock($router, txInfo.blockHash)">{{txInfo.blockHash}}</span>
                 <copy-clipboard :value="txInfo.blockHash"></copy-clipboard>
             </li>
             <li>
@@ -187,7 +187,7 @@
                     <div class="red">输入：</div>
                     <ul>
                         <li v-for="txVin in txInfo.txVin">
-                            <span class="address">{{txVin.address}}</span>
+                            <span class="address" @click="clickAddress($router, txVin.address)">{{txVin.address}}</span>
                             {{txInfo.txFee}} {{txInfo.txVout[0].symbol}}
                         </li>
                     </ul>
@@ -196,8 +196,7 @@
                     <div class="red">输出：</div>
                     <ul>
                         <li v-for="txVout in txInfo.txVout">
-                            <span
-                                class="address">{{txVout.address}}</span>
+                            <span class="address" @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
                             {{txVout.value}} {{txVout.symbol}}
                         </li>
                     </ul>

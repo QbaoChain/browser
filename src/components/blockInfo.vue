@@ -96,12 +96,12 @@
             </thead>
             <tbody v-if="!loading">
                 <tr v-for="item in blockInfoData">
-                    <td class="address" @click="clickBlock(item.blockHeight)">{{item.blockHeight}}</td>
+                    <td class="address" @click="clickBlock($router, item.blockHeight)">{{item.blockHeight}}</td>
                     <td>{{item.blockTime}}</td>
                     <td>{{item.blockAward}}</td>
                     <td>{{item.blockTxcount}}</td>
-                    <td class="address" @click="clickBlock(item.blockHash)">{{item.blockHash}}</td>
-                    <td class="address" @click="addressInfo(item.blockMiner)">{{item.blockMiner}}</td>
+                    <td class="address" @click="clickBlock($router, item.blockHash)">{{item.blockHash}}</td>
+                    <td class="address" @click="clickAddress($router, item.blockMiner)">{{item.blockMiner}}</td>
                 </tr>
             </tbody>
         </table>
@@ -119,7 +119,8 @@
 </template>
 
 <script>
-	export default {
+    import {clickBlock, clickAddress} from "../common/clickLink";
+    export default {
 		props: ['loading','blockInfoData','more','paginationConfig','searchConfig','isIndex'],
 		data() {
 			return {
@@ -133,22 +134,6 @@
 
         },
 		methods: {
-            addressInfo(address){
-                this.$router.push({
-                    path: '/addressInfo',
-                    query: {
-                        address
-                    }
-                })
-            },
-            clickBlock(block) {
-                this.$router.push({
-                    path: '/blockDetail',
-                    query: {
-                        block
-                    }
-                })
-            },
             handlePageChange(page){
                 this.paginationConfig.page = page;
                 let query = Object.assign({page: page},this.paginationConfig);

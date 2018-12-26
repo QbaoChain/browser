@@ -112,7 +112,7 @@
     <div id="blockInfo">
         <div v-for="item in txInfos">
             <ul>
-                <li class="tLeft address">{{item.txId}}<copy-clipboard :value="item.txId"></copy-clipboard></li>
+                <li class="tLeft"><span class="address" @click="clickTransaction($router, item.txId)">{{item.txId}}</span><copy-clipboard :value="item.txId"></copy-clipboard></li>
                 <li class="tRight"><span class="red">{{maxBlockHeight - item.blockHeight + 1}}个确认</span> {{item.time}}</li>
             </ul>
             <div>
@@ -120,8 +120,7 @@
                     <div class="red">输入：<span class="moveRight"></span></div>
                     <ul>
                         <li v-for="txVin in item.txVin">
-                            <span
-                                class="address">{{txVin.address}}</span>
+                            <span class="address" @click="clickAddress($router, txVin.address)">{{txVin.address}}</span>
                             {{item.txFee}} {{item.txVout[0].symbol}}
                         </li>
                     </ul>
@@ -130,8 +129,7 @@
                     <div class="red">输出：</div>
                     <ul>
                         <li v-for="txVout in item.txVout">
-                            <span
-                                class="address">{{txVout.address}}</span>
+                            <span class="address" @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
                             {{txVout.value}} {{txVout.symbol}}
                         </li>
                     </ul>
