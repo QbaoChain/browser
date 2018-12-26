@@ -23,7 +23,8 @@
             return {
                 blockInfoData: [],
                 exchangeInfo: [],
-                blockHeight: ''
+                blockHeight: '',
+                stompClient: null
             }
         },
         components: {
@@ -38,7 +39,7 @@
                     size: 10,
                     page: 0
                 }).then(res => {
-                    console.log('blockInfos', res);
+                    // console.log('blockInfos', res);
                     this.blockHeight = res.data.blockInfos[0].blockHeight;
                     this.blockInfoData = res.data.blockInfos;
                 })
@@ -48,7 +49,7 @@
                     size: 20,
                     page: 0
                 }).then(res=>{
-                    console.log('exchangeInfo', res);
+                    // console.log('exchangeInfo', res);
                     this.exchangeInfo = res.data.content;
                 })
             }
@@ -58,19 +59,25 @@
             this.exchange();
             let baseUrl = getBaseUrl();
             let socket = new SockJS(`${baseUrl}activity-websocket`);
-            let stompClient = Stomp.over(socket);
+            this.stompClient = Stomp.over(socket);
+            this.stompClient.debug = null;
             let that = this;
-            stompClient.connect({}, function (frame) {
-                stompClient.subscribe('/qbaoChain/response', function (greeting) {
+            let i = 0;
+            this.stompClient.connect({}, (frame) => {
+                this.stompClient.subscribe('/qbaoChain/response', function (greeting) {
                     let greet = JSON.parse(greeting.body);
                     that.blockInfoData.pop();
                     that.blockInfoData.unshift(greet.blocks);
                     that.exchangeInfo.pop();
                     that.exchangeInfo.unshift(greet.txs[0]);
-                    console.log(4343,greet);
+                    console.log(i++);
                     that.blockHeight = greet.blockHeight
                 });
             });
+        },
+        beforeDestroy() {
+            console.log("stomp disconnect");
+            this.stompClient.disconnect();
         }
     }
 </script>
