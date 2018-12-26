@@ -40,8 +40,9 @@
             float: right;
             vertical-align: middle;
             line-height: 50px;
+            position: relative;
             input{
-                width: 440px;
+                width: 480px;
                 height: 30px;
                 font-size: 16px;
                 padding: 0 0 0 20px;
@@ -50,6 +51,15 @@
                 border: 1px solid #DDDDDD;
                 border-radius: 5px;
             }
+        }
+        .notFound {
+            position: absolute;
+            width: 480px;
+            height: 40px;
+            top: 40px;
+            font-weight: 500;
+            border: 1px solid #DDDDDD;
+            padding-left: 20px;
         }
     }
 </style>
@@ -60,19 +70,64 @@
                 <a href="/"><img src="../assets/images/logo.png" alt=""></a>
             </div>
             <div class="input">
-                <input type="text" placeholder="搜索 区块/交易/地址/合约/Token">
+                <input type="text" placeholder="搜索 区块/交易/地址" v-model="str" @keyup.enter="search()">
+                <div class="notFound" v-show="showNotFound">找不到相应的记录</div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import { get } from '../ajax/index'
     export default {
         props: [],
         name: 'headerInfo',
         data() {
             return {
-                msg: 'Welcome to Your Vue.js App'
+                msg: 'Welcome to Your Vue.js App',
+                str: null,
+                showNotFound: false
+            }
+        },
+        methods: {
+            search() {
+                let str = this.str.trim();
+                get("/qtumRPC/queryByParam", {param: str})
+                    .then(res => {
+                        let type = res.data.type;
+                        this.showNotFound = false;
+                        switch (type) {
+                            case 'block':
+                                this.$router.push({
+                                    path: '/blockDetail',
+                                    query: {
+                                        block: str
+                                    }
+                                });
+                                break;
+                            case 'transaction':
+                                this.$router.push({
+                                    path: '/txInfo',
+                                    query: {
+                                        txHash: str
+                                    }
+                                });
+                                break;
+                            case 'address':
+                                this.$router.push({
+                                    path: '/addressInfo',
+                                    query: {
+                                        address: str
+                                    }
+                                });
+                                break;
+                            default:
+                                this.showNotFound = true;
+                                setTimeout(() => {
+                                    this.showNotFound = false;
+                                }, 2000)
+                        }
+                    })
             }
         }
     }
