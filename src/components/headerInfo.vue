@@ -89,6 +89,11 @@
                 showNotFound: false
             }
         },
+        watch: {
+            '$route' (to, from) {
+                this.str = null;
+            }
+        },
         methods: {
             search() {
                 let str = this.str.trim();

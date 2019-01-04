@@ -74,18 +74,34 @@
             copyClipboard
         },
         computed: {},
-        methods: {},
+        methods: {
+            initData() {
+                Object.assign(this.addressInfo, {
+                    address: null,
+                    QBE: null,
+                    totalNumber: null
+                })
+            },
+            getAddressInfo() {
+                let param = {
+                    address: this.address,
+                };
+                get('/qtumRPC/addressInfo',param).then((res) => {
+                    this.addressInfo.address = this.address;
+                    this.addressInfo.QBE = res.data.QBE;
+                    this.addressInfo.totalNumber = res.data.totalNumber;
+                });
+            }
+        },
+        watch: {
+            '$route' (to, from) {
+                this.initData();
+                this.getAddressInfo();
+            }
+        },
         mounted() {
             this.addressInfo.address = this.address;
-            let param = {
-                address: this.addressInfo.address,
-            };
-            get('/qtumRPC/addressInfo',param).then((res) => {
-                console.log(res.data);
-                this.addressInfo.QBE = res.data.QBE;
-                this.addressInfo.totalNumber = res.data.totalNumber;
-                console.log(444,this.txInfos);
-            })
+            this.getAddressInfo();
         }
     }
 </script>

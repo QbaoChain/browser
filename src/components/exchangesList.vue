@@ -199,8 +199,22 @@
                         this.maxBlockHeight = res.data.maxHeight;
                     }
                 })
+            },
+            initData() {
+                this.txInfos = [];
+                this.page = 0;
+                this.lastCount = 10;
+                this.maxBlockHeight = null;
             }
 
+        },
+        watch: {
+            '$route' (to, from) {
+                this.initData();
+                this.address = to.query.address;
+                this.getInitTxInfo();
+                this.getMaxBlockHeight();
+            }
         },
         mounted() {
             this.getInitTxInfo();

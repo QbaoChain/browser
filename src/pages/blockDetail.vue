@@ -233,15 +233,14 @@
                 block: null,
                 page: 0,
                 maxBlockHeight: null,
-                lastCount: 10
+                lastCount: 10,
+                isSearch: false
             }
         },
         components: {
             headerInfo, copyClipboard
         },
         computed: {
-        },
-        watch: {
         },
         methods: {
             getBlockInfoData(blockHashHeight){
@@ -287,6 +286,30 @@
             getNextTxInfo() {
                 this.page++;
                 this.getBlockTx();
+            },
+            initData() {
+                this.blockInfo = {blockHash: null,
+                    blockHeight: null,
+                    blockSize: null,
+                    blockTime: null,
+                    blockAward: null,
+                    blockMiner: null,
+                    blockTxcount: null};
+                this.txInfos = [];
+                this.block = null;
+                this.page = 0;
+                this.maxBlockHeight = null;
+                this.lastCount = 10;
+                this.isSearch = true;
+            }
+        },
+        watch: {
+            '$route' (to, from) {
+                this.initData();
+                let block = to.query.block;
+                this.getBlockInfoData(block);
+                this.getBlockTx(block);
+                this.getMaxBlockHeight();
             }
         },
         mounted() {
@@ -297,9 +320,12 @@
             let that = this;
             window.addEventListener('scroll',function(){
                 if(document.documentElement.scrollTop + window.innerHeight >= document.body.scrollHeight - 200) {
-                    if (that.lastCount == 10) {
+                    if (that.lastCount == 10 && !that.isSearch) {
                         that.lastCount = 0;
                         that.getNextTxInfo();
+                    }
+                    if (that.isSearch) {
+                        that.isSearch = false;
                     }
                 }
             });

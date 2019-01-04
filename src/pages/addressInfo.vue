@@ -28,7 +28,8 @@
                     QBE: '',
                     totalNumber: ''
                 },
-			    txInfos: []
+			    txInfos: [],
+                address: null
             }
 		},
 		components: {
@@ -36,13 +37,28 @@
             exchangesList,
             tab,
             headerInfo
-//            pagination
         },
 		computed: {},
 		methods: {
+		    initData() {
+		        this.address = null;
+		        Object.assign(this.addressInfo, {
+                    address: '',
+                    QBE: '',
+                    totalNumber: ''
+                });
+		        this.txInfos = [];
+            }
         },
 		mounted() {
 		},
+        watch: {
+            '$route' (to, from) {
+                this.initData();
+                this.address = to.query.address;
+                this.addressInfo.address = this.address;
+            }
+        },
         created() {
             this.address = this.$route.query.address;
         }

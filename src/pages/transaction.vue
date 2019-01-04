@@ -253,6 +253,26 @@
                         this.maxBlockHeight = res.data.maxHeight;
                     }
                 })
+            },
+            initData() {
+                this.txInfo = {
+                    txId: null,
+                        time: null,
+                        blockHash: null,
+                        blockHeight: null,
+                        size: null,
+                        txFee: null,
+                        txVin: null,
+                        txVout: null
+                };
+                this.maxBlockHeight = null;
+            }
+        },
+        watch: {
+            '$route' (to, from) {
+                let txId = to.query.txHash;
+                this.getTxInfo(txId);
+                this.getMaxBlockHeight();
             }
         },
         mounted() {
