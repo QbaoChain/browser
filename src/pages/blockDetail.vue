@@ -32,6 +32,13 @@
                     cursor: pointer;
                     color: #006AFF;
                 }
+                .asmTitle {
+                    font-size: 10px;
+                    font-weight: bold;
+                }
+                .asm {
+                    font-size: 10px;
+                }
             }
         }
     }
@@ -144,6 +151,15 @@
         top: -250%;
         border-left-color: red; /*如果绘制向下三角形的话，用border-top-color:#555;*/
     }
+
+    .fee {
+        width: 30%;
+        float: right;
+        font-size: 12px;
+        .feeTitle {
+            font-weight: bold;
+        }
+    }
 </style>
 
 <template>
@@ -193,7 +209,7 @@
                     <ul>
                         <li v-for="txVin in item.txVin">
                             <span class="address" @click="clickAddress($router, txVin.address)">{{txVin.address}}</span>
-                            {{item.txFee}} {{item.txVout[0].symbol}}
+                            {{txVin.value}} QBE
                         </li>
                     </ul>
                 </div>
@@ -201,10 +217,17 @@
                     <div class="red">输出：</div>
                     <ul>
                         <li v-for="txVout in item.txVout">
+                            <div>
                             <span class="address" @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
                             {{txVout.value}} {{txVout.symbol}}
+                            </div>
+                            <div><span class="asmTitle">类型：</span><span class="asm">{{txVout.Type}}</span></div>
+                            <div><span class="asmTitle">数据：</span><span class="asm">{{txVout.asm}}</span></div>
                         </li>
                     </ul>
+                    <div class="fee">
+                        <span class="feeTitle">交易费：</span>{{item.txFee}}
+                    </div>
                 </div>
                 <div style="clear: both;"></div>
             </div>
