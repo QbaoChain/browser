@@ -8,10 +8,12 @@ import 'font-awesome/css/font-awesome.min.css';
 import './assets/style/font.css';
 import 'element-ui/lib/theme-chalk/index.css';
 import { Pagination,Loading } from 'element-ui';
+import Element from 'element-ui'
 import {clickBlock, clickAddress, clickTransaction} from './common/clickLink'
 
 Vue.use(Pagination);
 Vue.use(Loading);
+Vue.use(Element);
 Vue.use(clickAddress);
 Vue.use(clickBlock);
 Vue.use(clickTransaction);

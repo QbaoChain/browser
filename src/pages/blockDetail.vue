@@ -113,6 +113,11 @@
                     margin-right: 40px;
                 }
             }
+
+            .data-choose {
+                width: 60px;
+                padding-right: 10px;
+            }
         }
 
     }
@@ -159,6 +164,10 @@
         .feeTitle {
             font-weight: bold;
         }
+    }
+
+    .data-choose /deep/ .el-input__inner {
+        padding: 0 5px;
     }
 </style>
 
@@ -222,7 +231,18 @@
                             {{txVout.value}} {{txVout.symbol}}
                             </div>
                             <div><span class="asmTitle">类型：</span><span class="asm">{{txVout.Type}}</span></div>
-                            <div><span class="asmTitle">数据：</span><span class="asm">{{txVout.asm}}</span></div>
+                            <div>
+                                <span class="asmTitle">数据：</span>
+                                <el-select class="data-choose" v-model="txVout.dataType" size="small" @change="selectDataType(txVout.dataType, txVout)">
+                                    <el-option
+                                        v-for="item in dataType"
+                                        :key="item.value"
+                                        :label="item.name"
+                                        :value="item.value"
+                                    ></el-option>
+                                </el-select>
+                                <span class="asm">{{txVout.selectData}}</span>
+                            </div>
                         </li>
                     </ul>
                     <div class="fee">
@@ -239,6 +259,7 @@
     import { get } from '../ajax/index'
     import headerInfo from '../components/headerInfo.vue';
     import copyClipboard from '../components/copyClipboard.vue';
+    import CryptoJS from 'crypto-js';
     export default {
         props: [],
         data() {
@@ -257,7 +278,22 @@
                 page: 0,
                 maxBlockHeight: null,
                 lastCount: 10,
-                isSearch: false
+                isSearch: false,
+                dataTypeSelect: [],
+                dataType: [
+                    {
+                        name: "原始",
+                        value: "origin"
+                    },
+                    {
+                        name: "文本",
+                        value: "plain"
+                    },
+                    {
+                        name: "方法",
+                        value: "method"
+                    }
+                ]
             }
         },
         components: {
@@ -295,6 +331,10 @@
                             tx.txVin = JSON.parse(tx.txVin);
                             tx.txVout = JSON.parse(tx.txVout);
                             this.txInfos.push(tx);
+                            tx.txVout.forEach(vout => {
+                                vout.dataType = "origin";
+                                vout.selectData = vout.asm;
+                            })
                         })
                     }
                 });
@@ -324,6 +364,20 @@
                 this.maxBlockHeight = null;
                 this.lastCount = 10;
                 this.isSearch = true;
+            },
+            selectDataType(dataType, vout) {
+                switch (dataType) {
+                    case "origin":
+                        vout.selectData = vout.asm;
+                        break;
+                    case "plain":
+                        vout.selectData = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]).toString(CryptoJS.enc.Utf8);
+                        break;
+                    case "method":
+                        vout.selectData = vout.asm.split(" ")[3];
+                        break;
+                }
+                this.$forceUpdate();
             }
         },
         watch: {
