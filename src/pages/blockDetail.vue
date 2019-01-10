@@ -2,6 +2,7 @@
     #txInfoHeader {
         width: 1200px;
         margin: 0 auto;
+        padding-bottom: 130px;
         height: 100%;
         h2 {
             background: #E6E9EE;
@@ -47,8 +48,8 @@
         width: 1200px;
         margin: 0 auto;
         background: #ffffff;
-        margin-top: 20px;
-        margin-bottom: 128px;
+        margin-top: 100px;
+        margin-bottom: 40px;
         h2 {
             width: 100%;
             font-size: 16px;
