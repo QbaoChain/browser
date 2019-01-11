@@ -85,7 +85,7 @@
             div {
                 ul {
                     li {
-                        width: 100%;
+                        width: 92%;
                         display: block;
                         font-size: 12px;
                         line-height: 26px;
@@ -105,6 +105,18 @@
                 }
                 .red {
                     margin-left: 50px;
+                }
+                .data-choose {
+                    width: 60px;
+                    padding-right: 10px;
+                }
+                .asmTitle {
+                    font-size: 10px;
+                    font-weight: bold;
+                }
+                .asm {
+                    font-size: 10px;
+                    word-break: break-all;
                 }
             }
         }
@@ -145,6 +157,9 @@
         /*top: -250%;*/
         /*border-left-color: red; !*如果绘制向下三角形的话，用border-top-color:#555;*!*/
     /*}*/
+    .data-choose /deep/ .el-input__inner {
+        padding: 0 5px;
+    }
 </style>
 
 <template>
@@ -200,6 +215,22 @@
                                 <span class="address"
                                       @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
                                 {{txVout.value}} {{txVout.symbol}}
+                                <div><span class="asmTitle">类型：</span><span class="asm">{{txVout.Type}}</span></div>
+                                <div>
+                                    <span class="asmTitle">数据：</span>
+                                    <el-select class="data-choose" v-model="txVout.dataType" size="small" @change="selectDataType(txVout.dataType, txVout)">
+                                        <el-option
+                                            v-for="item in dataType"
+                                            :key="item.value"
+                                            :label="item.name"
+                                            :value="item.value"
+                                        ></el-option>
+                                    </el-select>
+                                    <span class="asm">
+                                    <span v-show="txVout.dataType !== 'picture'">{{txVout.selectData}}</span>
+                                    <img :src="txVout.image" v-show="txVout.dataType === 'picture'" style="vertical-align: top">
+                                </span>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -211,9 +242,11 @@
 </template>
 
 <script>
-    import { get } from '../ajax/index'
-    import headerInfo from '../components/headerInfo.vue'
-    import copyClipboard from '../components/copyClipboard.vue'
+    import { get } from '../ajax/index';
+    import headerInfo from '../components/headerInfo.vue';
+    import copyClipboard from '../components/copyClipboard.vue';
+    import {asmDataType, imgBase64Prefix} from '../constant/common';
+    import CryptoJS from 'crypto-js';
     export default {
         props: ['txHash'],
         data() {
@@ -228,7 +261,25 @@
                     txVin: null,
                     txVout: null
                 },
-                maxBlockHeight: null
+                maxBlockHeight: null,
+                dataType: [
+                    {
+                        name: asmDataType.origin.name,
+                        value: asmDataType.origin.value
+                    },
+                    {
+                        name: asmDataType.plain.name,
+                        value: asmDataType.plain.value
+                    },
+                    {
+                        name: asmDataType.method.name,
+                        value: asmDataType.method.value
+                    },
+                    {
+                        name: asmDataType.picture.name,
+                        value: asmDataType.picture.value
+                    }
+                ]
             }
         },
         components: {headerInfo, copyClipboard},
@@ -247,6 +298,11 @@
                         Object.assign(this.txInfo, data[0]);
                         this.txInfo.txVin = JSON.parse(this.txInfo.txVin);
                         this.txInfo.txVout = JSON.parse(this.txInfo.txVout);
+                        this.txInfo.txVout.forEach(vout => {
+                            vout.dataType = asmDataType.origin.value;
+                            vout.selectData = vout.asm;
+                            vout.image = '';
+                        })
                     }
                 })
             },
@@ -269,6 +325,30 @@
                         txVout: null
                 };
                 this.maxBlockHeight = null;
+            },
+            selectDataType(dataType, vout) {
+                switch (dataType) {
+                    case asmDataType.origin.value:
+                        vout.selectData = vout.asm;
+                        break;
+                    case asmDataType.plain.value:
+                        try {
+                            vout.selectData = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]).toString(CryptoJS.enc.Utf8);
+                        } catch (e) {
+                            vout.selectData = '';
+                        }
+                        break;
+                    case asmDataType.method.value:
+                        vout.selectData = vout.asm.split(" ")[3];
+                        break;
+                    case asmDataType.picture.value:
+                        let data = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]);
+                        let base64 = CryptoJS.enc.Base64.stringify(data).toString();
+                        vout.image = imgBase64Prefix + base64;
+                        break;
+
+                }
+                this.$forceUpdate();
             }
         },
         watch: {
