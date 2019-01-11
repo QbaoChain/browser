@@ -262,6 +262,7 @@
 
 <script>
     import { get } from '../ajax/index'
+    import {asmDataType, imgBase64Prefix} from '../constant/common'
     import headerInfo from '../components/headerInfo.vue';
     import copyClipboard from '../components/copyClipboard.vue';
     import CryptoJS from 'crypto-js';
@@ -287,20 +288,20 @@
                 dataTypeSelect: [],
                 dataType: [
                     {
-                        name: "原始",
-                        value: "origin"
+                        name: asmDataType.origin.name,
+                        value: asmDataType.origin.value
                     },
                     {
-                        name: "文本",
-                        value: "plain"
+                        name: asmDataType.plain.name,
+                        value: asmDataType.plain.value
                     },
                     {
-                        name: "方法",
-                        value: "method"
+                        name: asmDataType.method.name,
+                        value: asmDataType.method.value
                     },
                     {
-                        name: "图片",
-                        value: "picture"
+                        name: asmDataType.picture.name,
+                        value: asmDataType.picture.value
                     }
                 ]
             }
@@ -341,7 +342,7 @@
                             tx.txVout = JSON.parse(tx.txVout);
                             this.txInfos.push(tx);
                             tx.txVout.forEach(vout => {
-                                vout.dataType = 'origin';
+                                vout.dataType = asmDataType.origin.value;
                                 vout.selectData = vout.asm;
                                 vout.image = '';
                             })
@@ -377,23 +378,23 @@
             },
             selectDataType(dataType, vout) {
                 switch (dataType) {
-                    case "origin":
+                    case asmDataType.origin.value:
                         vout.selectData = vout.asm;
                         break;
-                    case "plain":
+                    case asmDataType.plain.value:
                         try {
                             vout.selectData = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]).toString(CryptoJS.enc.Utf8);
                         } catch (e) {
                             vout.selectData = '';
                         }
                         break;
-                    case "method":
+                    case asmDataType.method.value:
                         vout.selectData = vout.asm.split(" ")[3];
                         break;
-                    case "picture":
+                    case asmDataType.picture.value:
                         let data = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]);
                         let base64 = CryptoJS.enc.Base64.stringify(data).toString();
-                        vout.image = "data:image;base64," + base64;
+                        vout.image = imgBase64Prefix + base64;
 
                 }
                 this.$forceUpdate();
