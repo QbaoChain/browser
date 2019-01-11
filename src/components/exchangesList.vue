@@ -45,6 +45,14 @@
                     color: #666666;
                     margin-right: 40px;
                 }
+                .asmTitle {
+                    font-size: 10px;
+                    font-weight: bold;
+                }
+                .asm {
+                    font-size: 10px;
+                    word-break: break-all;
+                }
             }
             div {
                 ul {
@@ -66,6 +74,10 @@
                     li {
                         margin-right: 40px;
                     }
+                }
+                .data-choose {
+                    width: 60px;
+                    padding-right: 10px;
                 }
             }
         }
@@ -106,6 +118,10 @@
         top: -250%;
         border-left-color: red; /*如果绘制向下三角形的话，用border-top-color:#555;*/
     }
+
+    .data-choose /deep/ .el-input__inner {
+        padding: 0 5px;
+    }
 </style>
 
 <template>
@@ -129,8 +145,26 @@
                     <div class="red">输出：</div>
                     <ul>
                         <li v-for="txVout in item.txVout">
-                            <span class="address" @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
-                            {{txVout.value}} {{txVout.symbol}}
+                            <div>
+                                <span class="address" @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
+                                {{txVout.value}} {{txVout.symbol}}
+                            </div>
+                            <div><span class="asmTitle">类型：</span><span class="asm">{{txVout.Type}}</span></div>
+                            <div>
+                                <span class="asmTitle">数据：</span>
+                                <el-select class="data-choose" v-model="txVout.dataType" size="small" @change="selectDataType(txVout.dataType, txVout)">
+                                    <el-option
+                                        v-for="item in dataType"
+                                        :key="item.value"
+                                        :label="item.name"
+                                        :value="item.value"
+                                    ></el-option>
+                                </el-select>
+                                <span class="asm">
+                                    <span v-show="txVout.dataType !== 'picture'">{{txVout.selectData}}</span>
+                                    <img :src="txVout.image" v-show="txVout.dataType === 'picture'" style="vertical-align: top">
+                                </span>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -143,6 +177,8 @@
 <script>
     import { get } from '../ajax/index'
     import copyClipboard from '../components/copyClipboard.vue'
+    import {asmDataType, imgBase64Prefix} from '../constant/common'
+    import CryptoJS from 'crypto-js';
     export default {
         props: ['address'],
         data() {
@@ -150,7 +186,25 @@
                 txInfos: [],
                 page: 0,
                 lastCount: 10,
-                maxBlockHeight: null
+                maxBlockHeight: null,
+                dataType: [
+                    {
+                        name: asmDataType.origin.name,
+                        value: asmDataType.origin.value
+                    },
+                    {
+                        name: asmDataType.plain.name,
+                        value: asmDataType.plain.value
+                    },
+                    {
+                        name: asmDataType.method.name,
+                        value: asmDataType.method.value
+                    },
+                    {
+                        name: asmDataType.picture.name,
+                        value: asmDataType.picture.value
+                    }
+                ]
             }
         },
         components: {
@@ -168,7 +222,7 @@
                 get('/qtumRPC/addressTxList',param).then((res) => {
                     this.lastCount = res.data.length;
                     res.data.forEach((item)=>{
-                        this.txInfos.push({
+                        let tx = {
                             blockHash: item.blockHash,
                             blockHeight: item.blockHeight,
                             size: item.size,
@@ -179,7 +233,13 @@
                             txVincount: item.txVincount,
                             txVout: JSON.parse(item.txVout),
                             txVoutcout: item.txVoutcout
-                        })
+                        };
+                        tx.txVout.forEach(vout => {
+                            vout.dataType = asmDataType.origin.value;
+                            vout.selectData = vout.asm;
+                            vout.image = '';
+                        });
+                        this.txInfos.push(tx);
                     });
                 })
             },
@@ -205,6 +265,30 @@
                 this.page = 0;
                 this.lastCount = 10;
                 this.maxBlockHeight = null;
+            },
+            selectDataType(dataType, vout) {
+                switch (dataType) {
+                    case asmDataType.origin.value:
+                        vout.selectData = vout.asm;
+                        break;
+                    case asmDataType.plain.value:
+                        try {
+                            vout.selectData = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]).toString(CryptoJS.enc.Utf8);
+                        } catch (e) {
+                            vout.selectData = '';
+                        }
+                        break;
+                    case asmDataType.method.value:
+                        vout.selectData = vout.asm.split(" ")[3];
+                        break;
+                    case asmDataType.picture.value:
+                        let data = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]);
+                        let base64 = CryptoJS.enc.Base64.stringify(data).toString();
+                        vout.image = imgBase64Prefix + base64;
+                        break;
+
+                }
+                this.$forceUpdate();
             }
 
         },
