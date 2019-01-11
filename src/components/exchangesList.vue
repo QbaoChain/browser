@@ -119,6 +119,15 @@
         border-left-color: red; /*如果绘制向下三角形的话，用border-top-color:#555;*/
     }
 
+    .fee {
+        width: 30%;
+        float: right;
+        font-size: 12px;
+        .feeTitle {
+            font-weight: bold;
+        }
+    }
+
     .data-choose /deep/ .el-input__inner {
         padding: 0 5px;
     }
@@ -167,6 +176,9 @@
                             </div>
                         </li>
                     </ul>
+                    <div class="fee">
+                        <span class="feeTitle">交易费：</span>{{item.txFee}}
+                    </div>
                 </div>
                 <div style="clear: both;"></div>
             </div>
