@@ -101,7 +101,7 @@
                 <a class="blogicon" href="https://blog.naver.com/qbaonetwork"><i></i></a>
             </div>
             <div>
-                Copyright © 2018 Qbao Network All rights reserved.
+                Copyright © {{year}} Qbao Network All rights reserved.
             </div>
         </footer>
     </div>
@@ -113,6 +113,7 @@
         name: 'App',
         data(){
             return {
+                year: (new Date()).getFullYear(),
                 linkbar: [
                     {
                         className: 'fa-twitter',
