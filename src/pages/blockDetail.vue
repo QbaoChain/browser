@@ -285,7 +285,6 @@
                 maxBlockHeight: null,
                 lastCount: 10,
                 isSearch: false,
-                dataTypeSelect: [],
                 dataType: [
                     {
                         name: asmDataType.origin.name,
