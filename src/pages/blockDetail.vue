@@ -49,7 +49,7 @@
         width: 1200px;
         margin: 0 auto;
         background: #ffffff;
-        margin-top: 100px;
+        margin-top: 0px;
         margin-bottom: 40px;
         h2 {
             width: 100%;
@@ -207,9 +207,9 @@
                 <label>确认数量：</label><span>{{maxBlockHeight - blockInfo.blockHeight + 1}}</span>
             </li>
         </ul>
-        <h3>
-
-        </h3>
+        <h2 style="display: inline-block; height: 100%; margin-top: 100px">
+            交易信息
+        </h2>
         <div v-for="item in txInfos" id="blockInfo">
             <ul>
                 <li class="tLeft"><span class="address" @click="clickTransaction($router, item.txId)">{{item.txId}}</span><copy-clipboard :value="item.txId"></copy-clipboard></li>
