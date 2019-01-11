@@ -188,7 +188,7 @@
                     <ul>
                         <li v-for="txVin in txInfo.txVin">
                             <span class="address" @click="clickAddress($router, txVin.address)">{{txVin.address}}</span>
-                            {{txInfo.txFee}} {{txInfo.txVout[0].symbol}}
+                            {{txVin.value}} {{txInfo.txVout[0].symbol}}
                         </li>
                     </ul>
                 </div>
@@ -196,8 +196,11 @@
                     <div class="red">输出：</div>
                     <ul>
                         <li v-for="txVout in txInfo.txVout">
-                            <span class="address" @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
-                            {{txVout.value}} {{txVout.symbol}}
+                            <div>
+                                <span class="address"
+                                      @click="clickAddress($router, txVout.address)">{{txVout.address}}</span>
+                                {{txVout.value}} {{txVout.symbol}}
+                            </div>
                         </li>
                     </ul>
                 </div>
