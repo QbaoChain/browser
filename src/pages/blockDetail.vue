@@ -344,7 +344,7 @@
                                 vout.dataType = asmDataType.origin.value;
                                 vout.selectData = vout.asm;
                                 vout.image = '';
-                            })
+                            });
                         })
                     }
                 });
