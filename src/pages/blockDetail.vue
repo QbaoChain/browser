@@ -39,6 +39,7 @@
                 }
                 .asm {
                     font-size: 10px;
+                    word-break: break-all;
                 }
             }
         }
@@ -93,7 +94,7 @@
             }
             ul {
                 li {
-                    width: 100%;
+                    width: 90%;
                     display: block;
                     font-size: 12px;
                     line-height: 26px;
@@ -242,7 +243,10 @@
                                         :value="item.value"
                                     ></el-option>
                                 </el-select>
-                                <span class="asm">{{txVout.selectData}}</span>
+                                <span class="asm">
+                                    <span v-show="txVout.dataType !== 'picture'">{{txVout.selectData}}</span>
+                                    <img :src="txVout.image" v-show="txVout.dataType === 'picture'" style="vertical-align: top">
+                                </span>
                             </div>
                         </li>
                     </ul>
@@ -293,6 +297,10 @@
                     {
                         name: "方法",
                         value: "method"
+                    },
+                    {
+                        name: "图片",
+                        value: "picture"
                     }
                 ]
             }
@@ -333,8 +341,9 @@
                             tx.txVout = JSON.parse(tx.txVout);
                             this.txInfos.push(tx);
                             tx.txVout.forEach(vout => {
-                                vout.dataType = "origin";
+                                vout.dataType = 'origin';
                                 vout.selectData = vout.asm;
+                                vout.image = '';
                             })
                         })
                     }
@@ -372,11 +381,20 @@
                         vout.selectData = vout.asm;
                         break;
                     case "plain":
-                        vout.selectData = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]).toString(CryptoJS.enc.Utf8);
+                        try {
+                            vout.selectData = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]).toString(CryptoJS.enc.Utf8);
+                        } catch (e) {
+                            vout.selectData = '';
+                        }
                         break;
                     case "method":
                         vout.selectData = vout.asm.split(" ")[3];
                         break;
+                    case "picture":
+                        let data = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]);
+                        let base64 = CryptoJS.enc.Base64.stringify(data).toString();
+                        vout.image = "data:image;base64," + base64;
+
                 }
                 this.$forceUpdate();
             }
