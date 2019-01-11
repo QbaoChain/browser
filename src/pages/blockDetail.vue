@@ -394,6 +394,7 @@
                         let data = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]);
                         let base64 = CryptoJS.enc.Base64.stringify(data).toString();
                         vout.image = imgBase64Prefix + base64;
+                        break;
 
                 }
                 this.$forceUpdate();
