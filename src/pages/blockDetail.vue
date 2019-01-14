@@ -40,6 +40,7 @@
                 .asm {
                     font-size: 10px;
                     word-break: break-all;
+                    white-space: pre-wrap;
                 }
             }
         }
@@ -262,7 +263,7 @@
 
 <script>
     import { get } from '../ajax/index'
-    import {asmDataType, imgBase64Prefix} from '../constant/common'
+    import {asmDataType, imgBase64Prefix, contractMethods} from '../constant/common'
     import headerInfo from '../components/headerInfo.vue';
     import copyClipboard from '../components/copyClipboard.vue';
     import CryptoJS from 'crypto-js';
@@ -388,7 +389,28 @@
                         }
                         break;
                     case asmDataType.method.value:
-                        vout.selectData = vout.asm.split(" ")[3];
+                        let selectData = vout.asm.split(" ")[3];
+                        let keccakFuns = Object.keys(contractMethods);
+                        let fun = keccakFuns.find(method => {
+                            return selectData.indexOf(method) == 0;
+                        });
+                        if (!fun) {
+                            vout.selectData = selectData;
+                            break;
+                        }
+                        selectData = selectData.substring(8);
+                        let params = [];
+                        let i = 0;
+                        while(true) {
+                            let offset = 64;
+                            let begin = i * offset, end = (i + 1) * 64 - 1;
+                            if (selectData.length < end) {
+                                break;
+                            }
+                            params.push(selectData.substring(begin, end));
+                            i++;
+                        }
+                        vout.selectData = contractMethods[fun] + "\r\n" + params.join("\r\n");
                         break;
                     case asmDataType.picture.value:
                         let data = CryptoJS.enc.Hex.parse(vout.asm.split(" ")[3]);
